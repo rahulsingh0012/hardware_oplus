@@ -194,7 +194,7 @@
          The network-type must be a valid DataConfigNetworkType value. If no value is found for the
          network-type in use, config_tcp_buffers will be used instead.
     -->
-    <string-array name="config_network_type_tcp_buffers">
+<string-array name="config_network_type_tcp_buffers">
     <item>NR_SA_MMWAVE:4194304,8388608,33554432,1048576,4194304,16777216</item>
     <item>NR_SA:4194304,8388608,33554432,1048576,4194304,16777216</item>
     <item>NR_NSA_MMWAVE:4194304,8388608,33554432,1048576,4194304,16777216</item>
