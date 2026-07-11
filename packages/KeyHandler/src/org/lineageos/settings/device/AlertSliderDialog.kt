@@ -19,6 +19,7 @@ import android.graphics.drawable.ColorDrawable
 import android.media.AudioManager
 import android.view.Gravity
 import android.view.Surface
+import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
@@ -140,7 +141,9 @@ class AlertSliderDialog(private val context: Context) :
     private fun animatePosition(endX: Int, endY: Int, position: Int, ringerMode: Int) {
         if (isAnimating) animator.cancel()
         animator = ValueAnimator()
-        animator.duration = 100
+        
+        // Ripple wave aur movement ko smooth dekhne ke liye duration ko 100 se badha kar 250 kiya hai
+        animator.duration = 250 
         animator.interpolator = OvershootInterpolator()
 
         window?.let {
@@ -165,6 +168,9 @@ class AlertSliderDialog(private val context: Context) :
                 override fun onAnimationStart(animation: Animator) {
                     isAnimating = true
                     applyUiMode(ringerMode)
+                    
+                    // Naye custom animation (Ripple Effect) ko trigger karne ke liye
+                    triggerRippleEffect()
                 }
 
                 override fun onAnimationEnd(animation: Animator) {
@@ -178,6 +184,31 @@ class AlertSliderDialog(private val context: Context) :
             }
         )
         animator.start()
+    }
+
+    /**
+     * Icon ke center se shuru hokar pure frame background me ripple wave expand karega.
+     */
+    private fun triggerRippleEffect() {
+        frameView.post {
+            // Icon ke mid-point se ripple wave ka center calculate kiya
+            val centerX = iconView.x.toInt() + iconView.width / 2
+            val centerY = iconView.y.toInt() + iconView.height / 2
+
+            // Maximum radius calculate kiya taki ripple pure frameView ko seamlessly mask kar sake
+            val finalRadius = Math.max(frameView.width, frameView.height).toFloat()
+
+            // Circular reveal animator setup kiya
+            val revealAnim = ViewAnimationUtils.createCircularReveal(
+                frameView, 
+                centerX, 
+                centerY, 
+                0f, 
+                finalRadius
+            )
+            revealAnim.duration = 280 // Slide movement se thoda sa zyada rakha hai better visibility ke liye
+            revealAnim.start()
+        }
     }
 
     private fun applyUiMode(ringerMode: Int) {
@@ -258,4 +289,5 @@ class AlertSliderDialog(private val context: Context) :
     companion object {
         private const val TAG = "AlertSliderDialog"
     }
-}
+    }
+    
