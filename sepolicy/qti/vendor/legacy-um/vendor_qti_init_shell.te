@@ -1,1 +1,5 @@
 create_dir_file(vendor_qti_init_shell, vendor_persist_wcnss_service_file)
+
+ifdef(`oplus_poweroffalarm_app_defined', `
+ typealias poweroffalarm_app alias vendor_poweroffalarm_app;
+')
