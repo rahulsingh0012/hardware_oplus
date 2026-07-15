@@ -29,4 +29,8 @@ SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += \
     hardware/oplus/sepolicy/qti/public/common-um
 endif
 
+ifneq (,$(filter %/legacy/vendor/common,$(BOARD_VENDOR_SEPOLICY_DIRS)))
+BOARD_SEPOLICY_M4DEFS += oplus_poweroffalarm_app_defined=true
+endif
+
 include device/lineage/sepolicy/libperfmgr/sepolicy.mk
